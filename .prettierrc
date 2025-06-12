@@ -1,0 +1,6 @@
+{
+  "printWidth": 128,
+  "trailingComma": "all",
+  "organizeImportsSkipDestructiveCodeActions": true,
+  "plugins": ["prettier-plugin-organize-imports"]
+}

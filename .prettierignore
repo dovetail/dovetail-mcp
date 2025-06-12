@@ -1,0 +1,73 @@
+# Ignore everything
+*
+# Except files with selected extentions that prettier supports
+!**/*.json
+!**/*.js
+!**/*.jsx
+!**/*.cjs
+!**/*.mjs
+!**/*.ts
+!**/*.tsx
+!**/*.cts
+!**/*.mts
+!**/*.sql
+
+# Even if they are in subdirectories
+!*/
+
+# Common to all worksapces
+workspaces/**/.cache
+workspaces/**/.venv
+workspaces/**/dist
+workspaces/**/storybookBuild
+infra/**/.cache
+infra/**/.venv
+infra/**/dist
+infra/**/storybookBuild
+
+# Per workspace (keep in sync with .github/codeql/codeql-config.yml)
+workspaces/libraries/app-lib/src/segment/generated
+workspaces/libraries/app-lib/src/types/graphql-community.ts
+workspaces/libraries/app-lib/src/types/graphql.ts
+workspaces/blog/public
+infra/community-backend/src/**/*.queries.ts
+infra/community-backend/src/postgraphile.cache.json
+infra/community-backend/src/types/graphql.ts
+workspaces/services/notes-service/src/**/*.queries.ts
+workspaces/services/notes-service/src/db/schema
+workspaces/services/notes-service/src/modules/core/SlackApp/manifest.mustache.json
+workspaces/services/notes-service/src/postgraphile.cache.json
+workspaces/services/notes-service/src/types/graphql-community.ts
+workspaces/services/notes-service/src/types/graphql-publicapi.ts
+workspaces/services/notes-service/src/types/restOpenApi.json
+workspaces/services/notes-service/src/types/graphql.ts
+workspaces/services/notes-service/notes_db.sql
+workspaces/libraries/public-api-docs/src/schema.json
+workspaces/apps/web-app/src/**/*.svg.d.ts
+workspaces/apps/web-app/src/types/graphql-community.ts
+workspaces/apps/web-app/src/types/graphql.ts
+workspaces/apps/web-app/tmp
+workspaces/apps/web-app/webpack.stats.json
+workspaces/apps/web-app/src/types/openApiTypes.ts
+workspaces/libraries/sql-linter/src/libpg-query-wasm/index.ts
+workspaces/libraries/sql-linter/src/libpg-query-wasm/libpg_query_wasm.js
+workspaces/apps/zapier/src/types/graphql.ts
+infra/data-warehouse/dbt_analytics
+
+# Per workspaces based on local git ignores
+snippets/stripeEventsExport/userData
+
+# Ignore unsupported sql for now
+infra/data-warehouse/**/*.sql
+
+# Unrelated to workspaces
+.yarn/
+.vscode/
+local-s3/
+local-opensearch/
+.cache/
+.nx/cache
+
+# Ignore legacy migrations that were never formatted
+workspaces/services/notes-service/src/db/migrate/*.ts
+workspaces/services/notes-service/src/db/migrate/1682381405486_UpdateDeniedDomainList.sql

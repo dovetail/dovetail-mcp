@@ -1,0 +1,22 @@
+{
+  "name": "mcp",
+  "main": "dist/index.js",
+  "private": true,
+  "packageManager": "yarn@4.9.2",
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.28.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "tsx": "^4.20.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.25.63"
+  },
+  "engines": {
+    "node": "^20.18.0 || ^22.14.0"
+  }
+}
