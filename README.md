@@ -1,82 +1,57 @@
 # Dovetail MCP Server
 
-A Model Context Protocol (MCP) server that provides access to Dovetail's user research platform. This server enables AI assistants to interact with Dovetail projects, insights, highlights, and data through standardized tools and prompts.
+A Model Context Protocol (MCP) server for interacting with the Dovetail API.
 
-## Features
+## Prerequisites
 
-- **Project Management**: List and access Dovetail projects
-- **Insights**: Retrieve and list project insights
-- **Highlights**: Access project highlights and findings
-- **Data Access**: Get project data in various formats including markdown export
-- **Research Analysis**: Built-in prompts for analyzing user feedback and opinions
+- Node.js 22 or higher
+   - You can try this on a previous version, but you'll need to configure this yourself!
+- A Dovetail API token (see [Dovetail API Documentation](https://developers.dovetail.com/docs/introduction) for details on obtaining one)
 
-## Setup
+## Installation
 
-1. **Environment Variables**
+### Option 1: Pre-compiled Script
 
+1. Download the latest release from the [GitHub releases page](https://github.com/dovetail/mcp/releases)
+2. Place the file somewhere you'll remember
+3. Head over to configuration!
+
+### Option 2: Setup from Source
+
+1. Clone the repository:
    ```bash
-   export DOVETAIL_API_TOKEN="your-dovetail-api-token"
+   git clone https://github.com/dovetail/mcp.git
+   cd mcp
    ```
 
-2. **Install Dependencies**
-
+2. Install dependencies:
    ```bash
    yarn install
    ```
 
-3. **Start the Server**
+3. Build the project:
    ```bash
-   yarn start
+   yarn build
    ```
 
-## Available Tools
-
-### Project Tools
-
-- `get_dovetail_projects` - Get all Dovetail projects
-- `list_project_data` - List data for a specific project
-- `get_project_data` - Get specific project data by ID
-- `get_data_content` - Get data content in markdown format
-
-### Insights & Highlights
-
-- `list_project_insights` - List insights for a specific project
-- `get_project_insight` - Get a specific insight by ID
-- `get_project_highlights` - Get highlights for a specific project
-
-## Available Prompts
-
-- `explain_thoughts` - Analyze what a specific person thinks about a product (currently configured for Zotify analysis)
-  - This is just an example at this stage of what you can do with prompts
-
-## Resources
-
-- `App Information` - Provide what's in this README to the LLM
-  - This is just an example of how to use resources
+4. Grab the `index.js` file from `dist/` and put it somewhere you'll remember.
 
 ## Configuration
 
-The server connects to Dovetail's API at `https://dovetail.com/api/v1` and includes:
+We recommend setting this up in a MCP client like Claude for Desktop. To do this in Claude, add the following to your configuration:
 
-- Automatic retry logic for failed requests
-- Exponential backoff for rate limiting
-- Error handling for network and server issues
+```
+    "mcp": {
+      "command": "node",
+      "args": [<path-to-your-index-js-file>],
+      "env": {
+        "DOVETAIL_API_TOKEN": "<YOUR_TOKEN>"
+      }
+    }
+```
 
-## Usage with MCP Clients
+## License
 
-This server implements the Model Context Protocol and can be used with any MCP-compatible client. Configure your client to connect to this server via stdio transport.
+MIT
 
-## Development
 
-- **Build**: `yarn build`
-- **Lint**: `yarn test.eslint`
-- **Type Check**: `yarn test.tsc`
-- **Format**: `yarn fix.prettier`
-
-## Error Handling
-
-The server includes robust error handling with:
-
-- Automatic retries for 5xx server errors and network issues
-- Exponential backoff delays
-- Detailed error logging to stderr
