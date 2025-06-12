@@ -1,7 +1,5 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { readFile } from "fs/promises";
-import { z } from "zod";
 import { retry } from "./utils/retry.js";
 
 const DOVETAIL_URL = "https://dovetail.com/api/v1";
@@ -57,23 +55,11 @@ async function makeDovetailRequest(endpoint: string) {
 
 // Create MCP server
 const server = new McpServer({
-  name: "mcp-dovetail-server",
+  name: "dovetail-mcp-server",
   version: "0.1.0",
 });
 
 // Register tools
-server.tool(
-  "get_project_highlights",
-  "Get highlights for a specific project",
-  {
-    project_id: { type: "string", description: "The ID of the project to get highlights for" },
-  },
-  async ({ project_id }) => {
-    const data = await makeDovetailRequest(`/highlights?filter[project_id]=${project_id}`);
-    return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-  },
-);
-
 server.tool(
   "get_project_insight",
   "Get a specific insight by ID",
@@ -137,59 +123,6 @@ server.tool(
 server.tool("get_dovetail_projects", "Get all Dovetail projects", {}, async () => {
   const data = await makeDovetailRequest("/projects");
   return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-});
-
-server.prompt(
-  "explain_thoughts",
-  "Analyze what a specific person thinks about Zotify",
-  {
-    name: z.string().describe("The name of the person to analyze"),
-  },
-  async ({ name }) => {
-    return {
-      messages: [
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: "You're a user researcher who is analyzing feedback on Zotify, a spotify competitor.",
-          },
-        },
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: "You have access to Dovetail.",
-          },
-        },
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: `Tell me about what ${name} thinks, finding all notes where she expresses her opinion.`,
-          },
-        },
-      ],
-    };
-  },
-);
-
-// Register resource
-server.resource("App Information", new ResourceTemplate("info://app", { list: undefined }), async () => {
-  try {
-    const readme = await readFile("README.md", "utf-8");
-    return {
-      contents: [
-        {
-          uri: "info://app",
-          text: readme,
-          mimeType: "text/markdown",
-        },
-      ],
-    };
-  } catch (error) {
-    throw new Error(`Failed to read README.md: ${error instanceof Error ? error.message : String(error)}`);
-  }
 });
 
 async function main() {
