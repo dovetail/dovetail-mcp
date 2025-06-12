@@ -54,6 +54,25 @@ async function makeDovetailRequest(endpoint: string) {
   });
 }
 
+// Reusable date format schema
+const dateFormatSchema = z
+  .string()
+  .regex(
+    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{6})?(Z|[+-]\d{4})?)?$/,
+    "Date must be in format: YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, YYYY-MM-DDTHH:MM:SSZ, YYYY-MM-DDTHH:MM:SS+0000, or YYYY-MM-DDTHH:MM:SS.SSSSSS+0000"
+  );
+
+// Reusable created_at filter schema
+const createdAtFilterSchema = z
+  .object({
+    gt: dateFormatSchema.describe("Greater than date").optional(),
+    gte: dateFormatSchema.describe("Greater than or equal to date").optional(),
+    lt: dateFormatSchema.describe("Less than date").optional(),
+    lte: dateFormatSchema.describe("Less than or equal to date").optional(),
+  })
+  .describe("Date filter parameters")
+  .optional();
+
 // Create MCP server
 const server = new McpServer({
   name: "dovetail-mcp-server",
@@ -86,6 +105,7 @@ server.tool(
       .optional(),
     filter: z
       .object({
+        created_at: createdAtFilterSchema,
         project_id: z
           .union([z.string().describe("Single project ID"), z.array(z.string()).describe("Array of project IDs")])
           .describe("Project ID or array of project IDs"),
@@ -194,15 +214,7 @@ server.tool(
       .optional(),
     filter: z
       .object({
-        created_at: z
-          .object({
-            gt: z.string().describe("Greater than date").optional(),
-            gte: z.string().describe("Greater than or equal to date").optional(),
-            lt: z.string().describe("Less than date").optional(),
-            lte: z.string().describe("Less than or equal to date").optional(),
-          })
-          .describe("Date filter parameters")
-          .optional(),
+        created_at: createdAtFilterSchema,
         project_id: z
           .union([z.string().describe("Single project ID"), z.array(z.string()).describe("Array of project IDs")])
           .describe("Project ID or array of project IDs")
@@ -360,6 +372,7 @@ server.tool(
       .optional(),
     filter: z
       .object({
+        created_at: createdAtFilterSchema,
         project_id: z
           .union([z.string().describe("Single project ID"), z.array(z.string()).describe("Array of project IDs")])
           .describe("Project ID or array of project IDs"),
