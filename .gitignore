@@ -170,3 +170,5 @@ infra/**/postgraphile.cache.json
 .env
 
 .yarn/cache
+
+dist/*

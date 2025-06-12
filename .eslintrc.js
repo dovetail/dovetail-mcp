@@ -1,9 +1,5 @@
 module.exports = {
-  ignorePatterns: [
-    ".yarn/",
-    "**/.cache/",
-    "**/dist/",
-  ],
+  ignorePatterns: [".yarn/", "**/.cache/", "**/dist/", "node_modules/"],
   overrides: [
     {
       files: ["*.{ts,tsx,cts,js,jsx,cjs}"],
@@ -49,33 +45,8 @@ module.exports = {
         "@typescript-eslint/no-useless-constructor": "error",
         "@typescript-eslint/no-base-to-string": "error",
         "@typescript-eslint/await-thenable": "error",
-        "@typescript-eslint/ban-types": [
-          "error",
-          {
-            extendDefaults: false,
-            types: {
-              // add a custom message, AND tell the plugin how to fix it
-              String: {
-                message: "Use string instead",
-                fixWith: "string",
-              },
-              "{}": {
-                message: "Use object instead",
-                fixWith: "object",
-              },
-              Object: {
-                message: "Use object instead",
-                fixWith: "object",
-              },
-              Branded: {
-                message: "Use correct type exported from `@dvtl/toolbox`, e.g. `codec.Uuid`",
-              },
-              "t.Branded": {
-                message: "Use correct type exported from `@dvtl/toolbox`, e.g. `codec.Uuid`",
-              },
-            },
-          },
-        ],
+        "@typescript-eslint/no-empty-object-type": "error",
+        "@typescript-eslint/no-wrapper-object-types": "error",
         "@typescript-eslint/consistent-type-assertions": [
           "error",
           {
@@ -131,7 +102,5 @@ module.exports = {
         "deprecation/deprecation": "error",
       },
     },
-    
- 
   ],
 };
