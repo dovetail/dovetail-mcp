@@ -2,6 +2,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { readFile } from "fs/promises";
 import { z } from "zod";
+import { retry } from "./utils/retry.js";
 
 const DOVETAIL_URL = "https://dovetail.com/api/v1";
 const DOVETAIL_API_TOKEN = process.env.DOVETAIL_API_TOKEN;
@@ -22,11 +23,11 @@ async function makeDovetailRequest(endpoint: string) {
     return response.json();
   };
 
-  return promise.retry(makeRequest, {
+  return retry(makeRequest, {
     maxRetries: 3,
     delayMs: 1000,
     delayType: "exponential",
-    retryIf: (err) => {
+    retryIf: (err: unknown) => {
       // Retry on network errors or 5xx server errors
       if (err instanceof Error) {
         const errorMessage = err.message.toLowerCase();
@@ -34,7 +35,7 @@ async function makeDovetailRequest(endpoint: string) {
         if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
           return true;
         }
-        // Retry on 5xx server errors. Could potentially be better, but for a first pass this is fine.
+        // Retry on 5xx server errors
         if (
           errorMessage.includes("500") ||
           errorMessage.includes("502") ||
@@ -46,7 +47,7 @@ async function makeDovetailRequest(endpoint: string) {
       }
       return false;
     },
-    onRetry: (attempt, totalAttempts) => {
+    onRetry: (attempt: number, totalAttempts: number) => {
       // Log retry attempts to stderr (allowed in MCP servers)
       // eslint-disable-next-line no-console
       console.error(`Dovetail API request failed, retrying (${attempt}/${totalAttempts}): ${endpoint}`);
