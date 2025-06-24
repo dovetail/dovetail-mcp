@@ -4,7 +4,7 @@ A Model Context Protocol (MCP) server for connecting AI tools to the Dovetail AP
 
 ## Prerequisites
 
-- Node.js 22 or higher
+- Node.js 22 or higher (download Node from [nodejs.org](https://nodejs.org/))
 - A Dovetail API token (see [Dovetail API Documentation](https://developers.dovetail.com/docs/introduction) for details on obtaining one)
 
 ## Installation
@@ -12,7 +12,7 @@ A Model Context Protocol (MCP) server for connecting AI tools to the Dovetail AP
 ### Option 1: Download Pre-built Script
 
 1. Download the latest `index.js` [here](https://github.com/dovetail/dovetail-mcp/releases/latest/download/index.js)
-2. Head over to configuration to continue
+2. Head over to [configuration](https://github.com/dovetail/dovetail-mcp/tree/main#configuration) to continue
 
 ### Option 2: Setup from Source
 
@@ -40,7 +40,7 @@ A Model Context Protocol (MCP) server for connecting AI tools to the Dovetail AP
 ## Configuration
 
 We recommend setting this up in an MCP client like Claude or Cursor by entering the following:
->Claude: Navigate to **Settings → Developer → Edit Config** and add the following to your `claude_desktop_config.json`
+>Claude: Please see the [MCP website](https://modelcontextprotocol.io/quickstart/user) for step by step instructions
 
 >Cursor: Navigate to **Settings → Tools & Integrations → Add Custom MCP**
 
