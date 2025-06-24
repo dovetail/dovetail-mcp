@@ -12,7 +12,7 @@ A Model Context Protocol (MCP) server for connecting AI tools to the Dovetail AP
 ### Option 1: Download Pre-built Script
 
 1. Download the latest `index.js` [here](https://github.com/dovetail/dovetail-mcp/releases/latest/download/index.js)
-2. Head over to [configuration](https://github.com/dovetail/dovetail-mcp/tree/main#configuration) to continue
+2. Head over to [configuration](#configuration) to continue
 
 ### Option 2: Setup from Source
 
