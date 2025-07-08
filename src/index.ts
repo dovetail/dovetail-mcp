@@ -108,7 +108,8 @@ server.tool(
         created_at: createdAtFilterSchema,
         project_id: z
           .union([z.string().describe("Single project ID"), z.array(z.string()).describe("Array of project IDs")])
-          .describe("Project ID or array of project IDs"),
+          .describe("Project ID or array of project IDs")
+          .optional(),
         published: z.boolean().describe("Filter by published status").optional(),
         title: z
           .object({
@@ -375,7 +376,8 @@ server.tool(
         created_at: createdAtFilterSchema,
         project_id: z
           .union([z.string().describe("Single project ID"), z.array(z.string()).describe("Array of project IDs")])
-          .describe("Project ID or array of project IDs"),
+          .describe("Project ID or array of project IDs")
+          .optional(),
         published: z.boolean().describe("Filter by published status").optional(),
         title: z
           .object({
