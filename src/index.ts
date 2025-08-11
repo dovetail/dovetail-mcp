@@ -9,7 +9,12 @@ const DOVETAIL_API_TOKEN = process.env.DOVETAIL_API_TOKEN;
 // Reusable HTTP request function with retry logic
 async function makeDovetailRequest(endpoint: string) {
   const makeRequest = async () => {
-    const response = await fetch(`${DOVETAIL_URL}${endpoint}`, {
+    // Add source parameter to the endpoint
+    const url = new URL(`${DOVETAIL_URL}${endpoint}`);
+    // This allows us to see where the request is coming from.
+    url.searchParams.append('source', 'dovetail-mcp-v1');
+    
+    const response = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${DOVETAIL_API_TOKEN}`,
       },
