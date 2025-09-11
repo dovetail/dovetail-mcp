@@ -89,7 +89,7 @@ server.tool(
   "get_project_insight",
   "Get a specific insight by ID",
   {
-    insight_id: { type: "string", description: "The ID of the insight to retrieve" },
+    insight_id: z.string().describe("The ID of the insight to retrieve"),
   },
   async ({ insight_id }) => {
     const data = await makeDovetailRequest(`/insights/${insight_id}`);
