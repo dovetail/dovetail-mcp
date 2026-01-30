@@ -98,6 +98,18 @@ server.tool(
 );
 
 server.tool(
+  "get_insight_content",
+  "Get insight content in markdown format",
+  {
+    insight_id: z.string().describe("The ID of the insight to retrieve"),
+  },
+  async ({ insight_id }) => {
+    const data = await makeDovetailRequest(`/insights/${insight_id}/export/markdown`);
+    return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+  },
+);
+
+server.tool(
   "list_project_insights",
   "List insights for a specific project",
   {
