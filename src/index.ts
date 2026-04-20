@@ -6,20 +6,29 @@ import { retry } from "./utils/retry.js";
 const DOVETAIL_URL = "https://dovetail.com/api/v1";
 const DOVETAIL_API_TOKEN = process.env.DOVETAIL_API_TOKEN;
 
+// Version of this self-hosted Dovetail MCP server. Embedded in the MCP server
+// identity and the outbound `User-Agent` header so the Dovetail API can attribute
+// requests to a self-hosted (stdio) MCP server for analytics. The `(stdio)`
+// suffix matches the `dovetail-mcp/<version> (<transport>)` convention used by
+// the hosted MCP server, allowing the public API to bucket traffic correctly.
+const VERSION = "0.2.0";
+const USER_AGENT = `dovetail-mcp/${VERSION} (stdio)`;
+
 // Reusable HTTP request function with retry logic
 async function makeDovetailRequest(endpoint: string) {
   const makeRequest = async () => {
     // Add source parameter to the endpoint
     const url = new URL(`${DOVETAIL_URL}${endpoint}`);
     // This allows us to see where the request is coming from.
-    url.searchParams.append('source', 'dovetail-mcp-v1');
-    
+    url.searchParams.append("source", "dovetail-mcp-v1");
+
     const response = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${DOVETAIL_API_TOKEN}`,
+        "User-Agent": USER_AGENT,
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Dovetail API error: ${response.status} ${response.statusText}`);
     }
@@ -64,7 +73,7 @@ const dateFormatSchema = z
   .string()
   .regex(
     /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{6})?(Z|[+-]\d{4})?)?$/,
-    "Date must be in format: YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, YYYY-MM-DDTHH:MM:SSZ, YYYY-MM-DDTHH:MM:SS+0000, or YYYY-MM-DDTHH:MM:SS.SSSSSS+0000"
+    "Date must be in format: YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, YYYY-MM-DDTHH:MM:SSZ, YYYY-MM-DDTHH:MM:SS+0000, or YYYY-MM-DDTHH:MM:SS.SSSSSS+0000",
   );
 
 // Reusable created_at filter schema
@@ -81,7 +90,7 @@ const createdAtFilterSchema = z
 // Create MCP server
 const server = new McpServer({
   name: "dovetail-mcp-server",
-  version: "0.1.0",
+  version: VERSION,
 });
 
 // Register tools
